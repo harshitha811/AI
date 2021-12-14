@@ -1,0 +1,174 @@
+f=0
+visited=[]
+step=list()
+
+def compare(l,l1):
+    if(l==l1):
+        return 1
+    return 0
+
+def printing(l):
+    print()
+    for i in range(3):
+        for j in range(3):
+            print(""+l[i][j]+"|",end="")
+        print()
+
+def possibilities(l,l1,d):
+    global f
+    global visited
+    global step
+    depth=d
+    #moving up of blank space
+    if(l[0][0]!=' ' and l[0][1]!=' ' and l[0][2]!=' '):
+        while(d>0):
+            d=d-1
+            for i in range(1,3):
+                for j in range(3):
+                    if(l[i][j]==' '):
+                        m=i
+                        n=j
+            li = [x[:] for x in l]
+            li[m][n]=li[m-1][n]
+            li[m-1][n]=' '
+            l = [x[:] for x in li]
+            if l not in visited:
+                visited.append(l)
+                up=compare(l,l1)
+                if(up==1):
+                    f=1
+                    return
+                possibilities(l,l1,d)
+                if(f==1):                
+                    step.append(l)
+                    return
+            li = [x[:] for x in l]
+            li[m-1][n]=li[m][n]
+            li[m][n]=' '
+            l = [x[:] for x in li]
+
+    d=depth
+    #moving down of blank space
+    if(l[2][0]!=' ' and l[2][1]!=' ' and l[2][2]!=' '):
+        while(d>0):
+            d=d-1
+            for i in range(2):
+                for j in range(3):
+                    if(l[i][j]==' '):
+                        m=i
+                        n=j
+            li = [x[:] for x in l]
+            li[m][n]=li[m+1][n]
+            li[m+1][n]=' '
+            l = [x[:] for x in li]
+            if l not in visited:
+                visited.append(l)
+                down=compare(l,l1)
+                if(down==1):
+                    f=1
+                    return
+                possibilities(l,l1,d)
+                if(f==1):
+                    step.append(l)
+                    return
+            li = [x[:] for x in l]
+            li[m+1][n]=li[m][n]
+            li[m][n]=' '
+            l = [x[:] for x in li]
+
+    #print(visited)
+    d=depth
+    #moving right of blank space
+    if(l[0][2]!=' ' and l[1][2]!=' ' and l[2][2]!=' '):
+        while(d>0):
+            d=d-1
+            for i in range(3):
+                for j in range(2):
+                    if(l[i][j]==' '):
+                        m=i
+                        n=j
+            li = [x[:] for x in l]
+            li[m][n]=li[m][n+1]
+            li[m][n+1]=' '
+            l = [x[:] for x in li]
+            if l not in visited:
+                visited.append(l)
+                right=compare(l,l1)
+                if(right==1):
+                    f=1
+                    return
+                possibilities(l,l1,d)
+                if(f==1):
+                    step.append(l)
+                    return
+            li = [x[:] for x in l]
+            li[m][n+1]=li[m][n]
+            li[m][n]=' '
+            l = [x[:] for x in li]
+            #print("c",visited)
+
+    d=depth
+    #moving left of blank space
+    if(l[0][0]!=' ' and l[1][0]!=' ' and l[2][0]!=' '):
+        while(d>0):
+            d=d-1
+            for i in range(3):
+                for j in range(1,3):
+                    if(l[i][j]==' '):
+                        m=i
+                        n=j
+            li = [x[:] for x in l]
+            li[m][n]=li[m][n-1]
+            li[m][n-1]=' '
+            l = [x[:] for x in li]
+            if l not in visited:
+                visited.append(l)
+                left=compare(l,l1)
+                if(left==1):
+                    f=1
+                    return
+                possibilities(l,l1,d)
+                if(f==1):
+                    step.append(l)
+                    return
+            li = [x[:] for x in l]
+            li[m][n-1]=li[m][n]
+            li[m][n]=' '
+            l = [x[:] for x in li]
+
+
+
+l=list()
+#initial state
+l=[['1','2','3'],[' ','4','6'],['7','5','8']]
+
+print("\nInitial state:")
+for i in range(3):
+    for j in range(3):
+        print(""+l[i][j]+"|",end="")
+    print()
+print()
+print("\nNext states:")
+#final state
+l1=[['1','2','3'],['4','5','6'],['7','8',' ']]
+d=0
+
+if(l==l1):
+    print("Goal reached")
+    printing(l1)
+    exit()
+
+while(f!=1):
+    #print("A")
+    visited=list()
+    d=d+1
+    l=[['1','2','3'],[' ','4','6'],['7','5','8']]
+    visited.append(l)
+    possibilities(l,l1,d)
+
+
+step.reverse()
+for i in step:
+    printing(i)
+
+printing(l1)
